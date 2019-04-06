@@ -42,7 +42,9 @@ class JarInputTask extends InputTask<JarInput> {
 
         def written = false
         ZipUtils.collectAllClassesFromJar(inputJar).forEach {
-            written = executeClass(it, temporaryDir) || written
+            // 2019-04-06 jar class '/' replace by '.'.
+            //written = executeClass(it, temporaryDir) || written
+            written = executeClass(it.replaceAll("/", "."), temporaryDir) || written
         }
         if (written) {
             ZipUtils.zipAppend(inputJar, taskInput.dest, temporaryDir)
